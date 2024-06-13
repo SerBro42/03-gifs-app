@@ -3,8 +3,12 @@
   <hr class="text-white">
 
   <div class="list-group list-reset">
-    <button class="list-group-item list-group-item-action">
+    <!-- ngFor: un botón por cada elemento del servicio -->
+    <!-- <button class="list-group-item list-group-item-action">
       Valorant
+    </button> -->
+    <button *ngFor="let tag of tags" class="list-group-item list-group-item-action">
+      {{ tag }}
     </button>
   </div>
 

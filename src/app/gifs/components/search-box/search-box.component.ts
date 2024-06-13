@@ -1,6 +1,7 @@
 
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { GifsService } from '../../services/gifs.service';
 
 /* keyup.enter significa que se dispara cada vez que se levanta la tecla Enter despuès de
 ser pulsada. #txtTagInput es como ponerle un ID */
@@ -26,12 +27,18 @@ export class SearchBoxComponent {
   @ViewChild('txtTagInput')
   public tagInput!: ElementRef<HTMLInputElement>;
 
-  constructor() { }
+  /* para usar el servicio de gifs, lo pasamos como parámetro al constructor y lo importamos al
+  principio del archivo */
+  constructor( private GifsService: GifsService ) { }
 
   searchTag( ) {
     const newTag = this.tagInput.nativeElement.value;
 
+    this.GifsService.searchTag(newTag);
+
     console.log({ newTag });
+    /* Limpiamos la caja de texto al finalizar la operación */
+    this.tagInput.nativeElement.value = '';
   }
 
 }
