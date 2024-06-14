@@ -1,10 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Gif, SearchResponse } from '../interfaces/gifs.interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GifsService {
+
+  /* Importamos la interfaz Gif de la hoja de interfaces que acabamos de crear */
+  public gifList: Gif[] = [];
 
   /* declaramos esta variable como privada para impedir que sea modificada por ninguna otra cosa
   que no sea este mismo servicio */
@@ -56,9 +60,14 @@ export class GifsService {
     /* Creamos un observable para hacer la petición HTTP, y nos suscribimos a él para escuchar la información
     que envía */
     /* Sustituimos la URL larga por la variable 'params' que hemos declarado más arriba */
-    this.http.get(`${ this.serviceUrl }/search`, { params })
+    /* Importamos la interfaz SearchResponse de la hoja de interfaces acabamos de crear y declaramos
+    que nuestra petición HTTP es de ese tipo */
+    this.http.get<SearchResponse>(`${ this.serviceUrl }/search`, { params })
       .subscribe( resp => {
-        console.log(resp);
+        //console.log(resp);
+
+        this.gifList = resp.data;
+        console.log({ gifs: this.gifList });
       });
 
   }
