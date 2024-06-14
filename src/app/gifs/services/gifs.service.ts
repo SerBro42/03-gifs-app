@@ -1,3 +1,4 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -8,8 +9,13 @@ export class GifsService {
   /* declaramos esta variable como privada para impedir que sea modificada por ninguna otra cosa
   que no sea este mismo servicio */
   private _tagsHistory: string[] = [];
+  /* Nos registramos en Giphy, creamos una Api Key personalizada y la traemos aquí */
+  private apiKey: string = 'nePBrRxKQON91BErpeHomvU08RF7sV4R';
+  private serviceUrl: string = 'https://api.giphy.com/v1/gifs';
 
-  constructor() { }
+  /* Para hacer peticiones HTTP, en primer lugar importamos el módulo y lo inicializamos como privado
+  en el constructor de este servicio */
+  constructor( private http: HttpClient) { }
 
   get tagsHistory() {
     return [...this._tagsHistory];
@@ -27,7 +33,7 @@ export class GifsService {
 
   }
 
-  public searchTag( tag: string ): void {
+  searchTag( tag: string ): void {
     /* Primer filtro. Si haces click en el input, no insertas nada y pulsas Enter, no sucede
     nada */
     if (tag.length === 0) return;
@@ -35,8 +41,25 @@ export class GifsService {
     desde aquí */
     this.organiseHistory(tag);
 
-    //this._tagsHistory.unshift( tag ); //Esta llamada a función es redundante
     console.log(this._tagsHistory);
+
+    /* Con el fin de abreviar la URL del http.get, vamos a poner los parámetros de búsqueda a continuación.
+    No hace falta importar nada, pues ya viene con JS de serie. Ponemos todos los paráetros que teníamos antes
+    en la URL grande */
+    const params = new HttpParams()
+      .set( 'api_key', this.apiKey )
+      .set( 'limit', '10' )
+      .set( 'q', tag )
+
+
+
+    /* Creamos un observable para hacer la petición HTTP, y nos suscribimos a él para escuchar la información
+    que envía */
+    /* Sustituimos la URL larga por la variable 'params' que hemos declarado más arriba */
+    this.http.get(`${ this.serviceUrl }/search`, { params })
+      .subscribe( resp => {
+        console.log(resp);
+      });
 
   }
 
