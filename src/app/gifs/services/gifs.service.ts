@@ -34,7 +34,15 @@ export class GifsService {
 
     this._tagsHistory.unshift( tag );
     this._tagsHistory = this.tagsHistory.splice(0,10);
+    // Una vez creado el historial, y con todos los elementos añadidos
+    this.saveLocalStorage();
 
+  }
+
+  /* Creamos función para guardar en LocalStorage el historial de búsquedas, previa conversión de JSON
+  a string */
+  private saveLocalStorage():void {
+    localStorage.setItem('history', JSON.stringify( this._tagsHistory ));
   }
 
   searchTag( tag: string ): void {
