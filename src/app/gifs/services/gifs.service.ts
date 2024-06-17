@@ -19,7 +19,10 @@ export class GifsService {
 
   /* Para hacer peticiones HTTP, en primer lugar importamos el módulo y lo inicializamos como privado
   en el constructor de este servicio */
-  constructor( private http: HttpClient) { }
+  constructor( private http: HttpClient) {
+    this.loadLocalStorage();
+    console.log('Gifs service ready');
+  }
 
   get tagsHistory() {
     return [...this._tagsHistory];
@@ -43,6 +46,14 @@ export class GifsService {
   a string */
   private saveLocalStorage():void {
     localStorage.setItem('history', JSON.stringify( this._tagsHistory ));
+  }
+
+  /* Recuperamos del LocalStorage el historial de búsquedas, convirtiéndolo de string a JSON. Ponemos el
+  non-null assertion operator para que no dé error. */
+  private loadLocalStorage():void {
+    if(!localStorage.getItem('history')) return;
+
+    this._tagsHistory = JSON.parse( localStorage.getItem('history')! );
   }
 
   searchTag( tag: string ): void {
