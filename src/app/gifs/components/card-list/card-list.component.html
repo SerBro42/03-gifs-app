@@ -6,7 +6,12 @@
     <div class="card mb-2 text-center bg-dark">
 
       <!-- TODO: Crear imagen del gif -->
-
+      <!-- Dado que la src de la imagen viene de JS, lo ponemos en [] para hacer el binding del valor -->
+      <img
+        [src]="gif.images.downsized_medium.url"
+        [alt]="gif.title"
+        class="card-img-top"
+      >
 
       <div class="card-body text-white">
         <p class="card-text">
